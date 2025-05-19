@@ -1,1 +1,78 @@
 @import "tailwindcss";
+
+body {
+  @apply bg-[#e3e3db] text-[#1a1a1a];
+  font-family: "PP Nueue Montreal", sans-serif;
+}
+
+h1 {
+  font-size: 7.5vw;
+  font-weight: 500;
+}
+
+p {
+  font-size: 16px;
+  font-weight: 500;
+}
+
+a {
+  text-decoration: none;
+  text-transform: uppercase;
+  font-family: "Akkurat Mono", monospace;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1a1a1a;
+  -webkit-font-smoothing: antialiased;
+}
+
+span {
+  position: relative;
+  top: -0.075em;
+  font-family: "PP Nueue Montreal", sans-serif;
+  font-size: 16px;
+  font-weight: 500;
+}
+
+img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.link {
+  @apply flex items-center gap-2 py-[1em];
+}
+
+.home {
+  @apply flex items-center  w-[100vw] h-[100vh] justify-center;
+}
+
+.project-list {
+  @apply absolute top-[50%] left-[50%] translate-x-[-50%] translate-y-[-50%] list-none
+  flex flex-col gap-2;
+}
+
+.project-nav {
+  @apply fixed top-0 left-[50%] translate-x-[-50%] w-[50vw] flex justify-between z-2 p-[1em] 
+  items-center gap-2;
+}
+
+.project-nav .link {
+  border-radius: 0.5rem;
+  background-color: #c6c6be;
+}
+
+.project-page-scroll-progress {
+  @apply relative flex-2 h-[30px] flex justify-center items-center border-[1px] border-[#c6c6be] rounded-[.5rem] overflow-hidden;
+  background-color: rgba(255, 255, 255, 0.25);
+  backdrop-filter: blur(20px);
+}
+
+.project-page-scroll-progress-bar {
+  @apply absolute top-0 left-0 h-full bg-[#c6c6be] w-full will-change-transform -z-1;
+  transform-origin: center left;
+  transform: scaleX(0%);
+}
+
+.project-list li {
+}
