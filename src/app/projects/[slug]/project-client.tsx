@@ -120,20 +120,19 @@ const ProjectClient = ({
           tl.call(() => {
             ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
 
-            router.push(`/projects/${nextProject.slug}`, {
-              scroll: false,
-            });
+            router.push(`/projects/${nextProject.slug}`);
           });
         }
       },
     });
 
     return () => {
-      ScrollTrigger.getAll().forEach((trigger) => {
-        if (trigger.vars.id !== "footer-scroll-trigger") {
-          trigger.kill();
-        }
-      });
+      if (navScrollTrigger) {
+        navScrollTrigger.kill();
+      }
+      if (footerScrollTrigger) {
+        footerScrollTrigger.kill();
+      }
     };
   }, [nextProject.slug, isTransitioning, shouldUpdateProgress, router]);
 

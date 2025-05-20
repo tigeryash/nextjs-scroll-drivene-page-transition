@@ -1,9 +1,17 @@
 import { projects } from "@/projects";
 import ProjectClient from "./project-client";
 
-const ProjectPage = ({ params }: { params: { slug: string } }) => {
-  const { slug } = params;
+const ProjectPage = async ({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) => {
+  const { slug } = await params;
   const project = projects.find((p) => p.slug === slug);
+
+  if (!project) {
+    return <div>Project not found</div>;
+  }
 
   const currentIndex = projects.findIndex((p) => p.slug === slug);
   const nextProject = projects[(currentIndex + 1) % projects.length];
