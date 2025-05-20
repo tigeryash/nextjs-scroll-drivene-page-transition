@@ -1,19 +1,22 @@
 "use client";
 
+import { Project } from "@/projects";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import ReactLenis from "lenis/react";
+import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
+import { useRouter } from "next/navigation";
 
 const ProjectClient = ({
   project,
   nextProject,
   prevProject,
 }: {
-  project: any;
-  nextProject: any;
-  prevProject: any;
+  project: Project;
+  nextProject: Project;
+  prevProject: Project;
 }) => {
   const projectNavRef = useRef<HTMLDivElement>(null);
   const progressBarRef = useRef<HTMLDivElement>(null);
@@ -23,6 +26,7 @@ const ProjectClient = ({
 
   const [isTransitioning, setIsTransitioning] = useState(false);
   const [shouldUpdateProgress, setShouldUpdateProgress] = useState(true);
+  const router = useRouter();
 
   useEffect(() => {
     gsap.registerPlugin(ScrollTrigger);
@@ -66,7 +70,7 @@ const ProjectClient = ({
       end: `+=${window.innerHeight * 3}px`,
       pin: true,
       pinSpacing: true,
-      onEnterBack: () => {
+      onEnter: () => {
         if (projectNavRef.current && !isTransitioning) {
           gsap.to(projectNavRef.current, {
             y: -100,
@@ -84,8 +88,54 @@ const ProjectClient = ({
           });
         }
       },
+      onUpdate: (self) => {
+        if (nextProjectProgressBarRef.current && shouldUpdateProgress) {
+          gsap.set(nextProjectProgressBarRef.current, {
+            scaleX: self.progress,
+          });
+        }
+
+        if (self.progress >= 1 && !isTransitioning) {
+          setShouldUpdateProgress(false);
+          setIsTransitioning(true);
+
+          const tl = gsap.timeline();
+
+          tl.set(nextProjectProgressBarRef.current, {
+            scaleX: 1,
+          });
+
+          tl.to(
+            [
+              footerRef.current?.querySelector(".project-footer-copy"),
+              footerRef.current?.querySelector(".next-project-progress"),
+            ],
+            {
+              opacity: 0,
+              duration: 0.3,
+              ease: "power2.inOut",
+            }
+          );
+
+          tl.call(() => {
+            ScrollTrigger.getAll().forEach((trigger) => trigger.kill());
+
+            router.push(`/projects/${nextProject.slug}`, {
+              scroll: false,
+            });
+          });
+        }
+      },
     });
-  }, [nextProject.slug, isTransitioning, shouldUpdateProgress]);
+
+    return () => {
+      ScrollTrigger.getAll().forEach((trigger) => {
+        if (trigger.vars.id !== "footer-scroll-trigger") {
+          trigger.kill();
+        }
+      });
+    };
+  }, [nextProject.slug, isTransitioning, shouldUpdateProgress, router]);
 
   return (
     <ReactLenis root>
@@ -122,7 +172,12 @@ const ProjectClient = ({
           {project.images &&
             project.images.map((image: string, index: number) => (
               <div className="project-img" key={index}>
-                <img src={image} alt={project.title} />
+                <Image
+                  src={image}
+                  alt={project.title}
+                  width={1000}
+                  height={1000}
+                />
               </div>
             ))}
         </div>
