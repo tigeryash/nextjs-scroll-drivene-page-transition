@@ -1,7 +1,7 @@
 @import "tailwindcss";
 
 body {
-  @apply bg-[#e3e3db] text-[#1a1a1a];
+  @apply bg-[#e3e3db] text-[#1a1a1a] overflow-x-hidden;
   font-family: "PP Nueue Montreal", sans-serif;
 }
 
@@ -40,7 +40,7 @@ img {
 }
 
 .link {
-  @apply flex items-center gap-2 py-[1em];
+  @apply flex items-center gap-2 px-[1em];
 }
 
 .home {
@@ -53,7 +53,7 @@ img {
 }
 
 .project-nav {
-  @apply fixed top-0 left-[50%] translate-x-[-50%] w-[50vw] flex justify-between z-2 p-[1em] 
+  @apply fixed top-0 left-[50%] translate-x-[-50%] lg:w-[50vw] w-[100vw] flex justify-between z-2 p-[1em] 
   items-center gap-2;
 }
 
@@ -74,5 +74,45 @@ img {
   transform: scaleX(0%);
 }
 
-.project-list li {
+.project-hero,
+.project-footer {
+  @apply relative w-[100vw] h-[100svh] flex items-center justify-center;
+}
+
+#project-description {
+  @apply absolute bottom-[10%] left-[50%] translate-x-[-50%] translate-y-[-50%] text-center opacity-0;
+}
+
+.project-footer-copy {
+  @apply absolute top-[35%] left-[50%] translate-x-[-50%] translate-y-[-50%];
+}
+.project-images {
+  @apply flex flex-col gap-[5em] items-center;
+}
+.project-img {
+  @apply w-[50vw] h-[75svh];
+}
+
+.next-project-progress {
+  /* @apply absolute bottom-[25%] w-[50%] h-[4px] bg-[#c6c6be]; */
+  position: absolute;
+  bottom: 25%;
+  width: 50%;
+  height: 4px;
+  background-color: #c6c6be;
+}
+
+.next-project-progress-bar {
+  @apply absolute top-0 left-0 h-full bg-[#000] w-full;
+  will-change: transform;
+  transform: scaleX(0%);
+}
+
+@media (max-width: 900px) {
+  .project-nav link {
+    display: none;
+  }
+  .project-img {
+    width: 90%;
+  }
 }
